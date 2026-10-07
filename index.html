@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tablero de Indicadores - Nuestro Entorno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1F4A42;
+    --forest-dark:#173a34;
+    --cream:#EAE79A;
+    --cream-soft:#F3F1DE;
+    --terracota:#D2704C;
+    --mint:#8FC0B5;
+    --gold:#8B6F2E;
+    --ink:#1c2624;
+    --paper:#1F4A42;
+    --card:#F1F6EE;
+    --line:#d5ddd9;
+    --muted:#6B7570;
+    --radius:8px;
+    --shadow: 0 1px 2px rgba(21,54,49,.06), 0 4px 14px rgba(21,54,49,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Nunito',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.brand-word,.tabbtn{font-family:'Baloo 2',sans-serif;}
+
+  /* ---------- HEADER ---------- */
+  header.topbar{
+    background:#173a34;
+    color:var(--cream);
+    padding:22px 28px 0 28px;
+  }
+  .brandrow{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .logo-icon{
+    width:34px;height:34px;
+    border-radius:9px;
+    background:var(--cream);
+    position:relative;
+    flex:none;
+  }
+  .logo-icon::after{
+    content:"";
+    position:absolute;
+    top:50%;left:50%;
+    width:10px;height:10px;
+    background:var(--forest);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+  }
+  .brand-word{
+    font-size:15px;
+    letter-spacing:.5px;
+    font-weight:700;
+    color:var(--cream);
+    text-transform:lowercase;
+    opacity:.9;
+  }
+  .titleblock h1{
+    margin:0 0 3px 0;
+    font-size:26px;
+    font-weight:700;
+    color:#fff;
+  }
+  .titleblock p{
+    margin:0 0 18px 0;
+    font-size:14px;
+    color:var(--mint);
+    font-weight:600;
+    max-width:760px;
+  }
+  nav.tabs{
+    display:flex;
+    gap:4px;
+  }
+  .tabbtn{
+    background:transparent;
+    border:none;
+    color:rgba(234,231,154,.65);
+    font-size:15px;
+    font-weight:600;
+    padding:12px 18px;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+    transition:.15s;
+  }
+  .tabbtn:hover{color:var(--cream);}
+  .tabbtn.active{
+    color:var(--cream);
+    border-bottom:3px solid var(--cream);
+  }
+
+  /* ---------- LAYOUT ---------- */
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:34px 28px 60px 28px;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .level-intro{
+    margin-bottom:26px;
+  }
+  .level-intro h2{
+    font-size:22px;
+    margin:0 0 6px 0;
+    color:var(--cream);
+  }
+  .level-intro p{
+    margin:0;
+    color:var(--mint);
+    font-size:14.5px;
+    max-width:760px;
+    line-height:1.5;
+  }
+
+  /* ---------- FIN / PROPOSITO (tratamiento grande) ---------- */
+  .strategic-narrative{
+    background:var(--card);
+    color:var(--ink);
+    border-left:6px solid var(--cream);
+    border-radius:var(--radius);
+    padding:20px 24px;
+    margin-bottom:26px;
+    font-size:15px;
+    line-height:1.55;
+  }
+  .strategic-narrative b{color:var(--forest-dark);}
+  .strategic-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+    gap:20px;
+  }
+  .strategic-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:5px solid var(--terracota);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:22px 24px 24px 24px;
+  }
+  .strategic-card.tone-mint{border-top-color:var(--mint);}
+  .strategic-card .idtag{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:800;
+    letter-spacing:.4px;
+    color:var(--terracota);
+    background:#FBEDE6;
+    padding:3px 9px;
+    border-radius:5px;
+    margin-bottom:10px;
+  }
+  .tone-mint .idtag{color:#3D6D62; background:#EBF4F1;}
+  .strategic-card .ind-name{
+    font-size:15.5px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.35;
+    margin:0 0 18px 0;
+    min-height:42px;
+  }
+  .bignum-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .bignum{
+    font-family:'Baloo 2',sans-serif;
+    font-size:44px;
+    font-weight:700;
+    color:var(--forest-dark);
+    line-height:1;
+  }
+  .goal{
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .barwrap{
+    background:#d9e5de;
+    border-radius:5px;
+    height:10px;
+    overflow:hidden;
+    position:relative;
+  }
+  .barfill{
+    height:100%;
+    background:var(--terracota);
+    border-radius:5px;
+  }
+  .tone-mint .barfill{background:var(--mint);}
+
+  /* ---------- COMPONENTES (nivel intermedio) ---------- */
+  .comp-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(330px,1fr));
+    gap:18px;
+  }
+  .comp-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:6px solid var(--forest);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px 20px;
+  }
+  .comp-card.c2{border-left-color:var(--terracota);}
+  .comp-card.c3{border-left-color:var(--mint);}
+  .comp-card.c4{border-left-color:var(--gold);}
+  .comp-card .idtag{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.4px;
+    color:var(--forest);
+    margin-bottom:6px;
+    display:block;
+  }
+  .comp-card.c2 .idtag{color:var(--terracota);}
+  .comp-card.c3 .idtag{color:#3D6D62;}
+  .comp-card.c4 .idtag{color:var(--gold);}
+  .comp-card h3{
+    margin:0 0 10px 0;
+    font-size:16.5px;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .comp-field{margin-bottom:10px;}
+  .comp-field .label{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--muted);
+    font-weight:800;
+    margin-bottom:3px;
+  }
+  .comp-field .value{
+    font-size:13.5px;
+    color:var(--ink);
+    line-height:1.45;
+  }
+  .comp-progress-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:14px;
+  }
+  .comp-progress-row .pct{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--forest-dark);
+    min-width:46px;
+  }
+  .comp-sub{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .comp-card .barwrap{height:8px;}
+  .comp-card.c2 .barfill{background:var(--terracota);}
+  .comp-card.c3 .barfill{background:var(--mint);}
+  .comp-card.c4 .barfill{background:var(--gold);}
+  .comp-card:not(.c2):not(.c3):not(.c4) .barfill{background:var(--forest);}
+
+  /* ---------- ACTIVIDADES (tabla compacta) ---------- */
+  .act-group{
+    margin-bottom:28px;
+  }
+  .act-group-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .act-group-head .dot{
+    width:11px;height:11px;
+    border-radius:3px;
+    background:var(--cream);
+    flex:none;
+  }
+  .act-group.c2 .dot{background:var(--terracota);}
+  .act-group.c3 .dot{background:var(--mint);}
+  .act-group.c4 .dot{background:var(--gold);}
+  .act-group-head h3{
+    margin:0;
+    font-size:16px;
+    color:var(--cream);
+  }
+  .act-group-head .compid{
+    font-size:11.5px;
+    color:var(--mint);
+    font-weight:700;
+  }
+  table.act-table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    font-size:13px;
+  }
+  table.act-table thead th{
+    text-align:left;
+    background:#2c6358;
+    color:var(--cream);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    font-weight:800;
+    padding:9px 14px;
+    border-bottom:1px solid var(--line);
+  }
+  table.act-table td{
+    padding:9px 14px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+    color:var(--ink);
+  }
+  table.act-table tr:last-child td{border-bottom:none;}
+  table.act-table tr:hover td{background:#FAFAF4;}
+  .act-id{
+    font-weight:800;
+    color:var(--forest-dark);
+    font-size:12.5px;
+    white-space:nowrap;
+  }
+  .act-name{font-weight:600; max-width:280px;}
+  .act-ind{color:var(--muted); font-size:12.5px; max-width:280px;}
+  .act-bar-cell{min-width:140px;}
+  .act-bar-row{display:flex; align-items:center; gap:8px;}
+  .act-barwrap{
+    flex:1;
+    background:#d9e5de;
+    height:7px;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .act-barfill{height:100%; background:var(--forest);}
+  .act-group.c2 .act-barfill{background:var(--terracota);}
+  .act-group.c3 .act-barfill{background:var(--mint);}
+  .act-group.c4 .act-barfill{background:var(--gold);}
+  .act-pct{font-size:12px; font-weight:800; min-width:34px; text-align:right; color:var(--ink);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px 40px 28px;
+    color:#cfe3dd;
+    font-size:12px;
+    line-height:1.6;
+    border-top:1px solid rgba(234,231,154,.3);
+    padding-top:16px;
+  }
+  footer b{color:var(--cream);}
+  footer .warn{color:var(--cream); font-weight:700;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brandrow">
+    <div class="logo-icon"></div>
+    <span class="brand-word">entorno a ti</span>
+  </div>
+  <div class="titleblock">
+    <h1>Tablero de Indicadores &middot; Nuestro Entorno</h1>
+    <p>Gobernanza ambiental comunitaria y alternativas económicas sostenibles en Tepoztlán.</p>
+  </div>
+  <nav class="tabs" id="tabsNav">
+    <button class="tabbtn active" data-tab="fin">Fin</button>
+    <button class="tabbtn" data-tab="proposito">Proposito</button>
+    <button class="tabbtn" data-tab="componentes">Componentes</button>
+    <button class="tabbtn" data-tab="actividades">Actividades</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ===================== FIN ===================== -->
+  <section id="fin" class="panel active">
+    <div class="level-intro">
+      <h2>Fin</h2>
+      <p>Indicador estrategico de nivel superior: cambios de largo plazo que el proyecto busca contribuir a generar.</p>
+    </div>
+    <div class="strategic-narrative">
+      <b>Resumen narrativo:</b> Condiciones ambientales, sociales, económicas e institucionales fortalecidas para el cuidado sostenible del territorio de Tepoztlán.
+    </div>
+    <div class="strategic-grid" id="finGrid"></div>
+  </section>
+
+  <!-- ===================== PROPOSITO ===================== -->
+  <section id="proposito" class="panel">
+    <div class="level-intro">
+      <h2>Proposito</h2>
+      <p>Efecto directo que se espera lograr al final de la intervencion.</p>
+    </div>
+    <div class="strategic-narrative">
+      <b>Resumen narrativo:</b> Actores comunitarios, sociales, económicos e institucionales participan en la construcción de una visión común para Tepoztlán.
+    </div>
+    <div class="strategic-grid" id="propGrid"></div>
+  </section>
+
+  <!-- ===================== COMPONENTES ===================== -->
+  <section id="componentes" class="panel">
+    <div class="level-intro">
+      <h2>Componentes</h2>
+      <p>Productos y servicios que el proyecto entrega para lograr el proposito.</p>
+    </div>
+    <div class="comp-grid" id="compGrid"></div>
+  </section>
+
+  <!-- ===================== ACTIVIDADES ===================== -->
+  <section id="actividades" class="panel">
+    <div class="level-intro">
+      <h2>Actividades</h2>
+      <p>Acciones especificas agrupadas por componente y fase, con avance calculado sobre línea base y meta.</p>
+    </div>
+    <div id="actContainer"></div>
+  </section>
+
+</main>
+
+<footer>
+  <b>Fuente:</b> Captura_indicadores_MIR_ETI.xlsx, hoja "Nuestro Entorno" (matriz de indicadores de resultados, ETI). Indicadores, métodos de cálculo, línea base y metas tomados directamente de la hoja de captura.
+  <br><br>
+  <span class="warn">Nota sobre datos:</span> primer corte capturado en la hoja "Nuestro Entorno". Comp.1, Comp.2, Comp.3 y todas las actividades usan el "Último valor (%)" capturado (0% en casi todas, 3% en A1.1 y A3.2). En Fin.1-3 y Prop.1-3 la columna "Último valor" está vacía; la fila trae solo un "100" suelto en la última columna capturada, sin numerador ni denominador de Periodo 1, así que no corresponde a un valor real todavía y aquí se muestran en 0% (pendiente de la encuesta). Conviene revisar en el Excel a qué corresponde ese "100" antes de capturar el primer dato real de estos seis indicadores. También en A2.1 la Meta está en texto ("&gt;3") y la columna "Avance vs. meta" del Excel marca error (#VALOR!); conviene cambiarla a un número.
+</footer>
+
+<script>
+// ---------------- DATA (fuente: base_de_datos_MIR-Nuestra_energía.xlsx) ----------------
+const finData = [
+  {id:"Fin.1", name:"% de personas encuestadas que perciben mejoras en las condiciones ambientales", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+  {id:"Fin.2", name:"% de personas encuestadas que perciben mejoras en la convivencia comunitaria", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+  {id:"Fin.3", name:"% de personas encuestadas que perciben mejoras en las oportunidades económicas sostenibles.", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+];
+
+const propData = [
+  {id:"Prop.1", name:"% de personas que colaboraron con distintos tipos de actores comunitarios", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+  {id:"Prop.2", name:"% de personas que consideran posible construir acuerdos ambientales", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+  {id:"Prop.3", name:"% de personas que perciben capacidad comunitaria de incidencia", value:0, sub:"línea base 0% / meta pendiente (Último valor sin capturar)"},
+];
+
+const compData = [
+  {
+    id:"Comp.1", cls:"", name:"Laboratorio de Medio Ambiente, Memoria, Paz y Futuros implementado.",
+    indicador:"% de talleres implementados",
+    metodo:"Talleres implementados / talleres programados × 100",
+    value:0, sub:"línea base 0% / meta 100%"
+  },
+  {
+    id:"Comp.2", cls:"c2", name:"Campaña comunitaria de comunicación diseñada e implementada para difundir buenas prácticas, acuerdos y narrativas de responsabilidad ambiental compartida.",
+    indicador:"% de la estrategia de comunicación implementada.",
+    metodo:"Productos completados / productos programados × 100",
+    value:0, sub:"línea base 0% / meta 100%"
+  },
+  {
+    id:"Comp.3", cls:"c3", name:"Parcelas operando como iniciativa demostrativa.",
+    indicador:"% de ciclos productivos completados",
+    metodo:"Ciclos completados / ciclos programados × 100",
+    value:0, sub:"línea base 0% / meta 100%"
+  },
+];
+
+const actGroups = [
+  {
+    compId:"Comp.1", cls:"", title:"Comp.1 · Laboratorio de Medio Ambiente, Memoria Paz y Futuros",
+    items:[
+      {id:"A1.1", name:"Mapa de actores elaborado.", ind:"% de mapa completado", value:3.0},
+      {id:"A1.2", name:"Memoria socioambiental recuperada y sistematizada.", ind:"% de memoria socioambiental redactada", value:0},
+      {id:"A1.3", name:"Talleres participativos de construcción de futuros realizados.", ind:"% de talleres realizados", value:0},
+      {id:"A1.4", name:"Visión compartida validada.", ind:"% de participantes que aprueban la visión propuesta.", value:0},
+      {id:"A1.5", name:"Acuerdos validados.", ind:"% de acuerdos aprobados por los participantes.", value:0},
+      {id:"A1.6", name:"Proyectos prioritarios validados.", ind:"% de acuerdos validados", value:0},
+      {id:"A1.7", name:"Manifiesto difundido públicamente.", ind:"% de canales programados en los que se publicó el manifiesto.", value:0},
+      {id:"A1.8", name:"Resultados del Laboratorio presentados públicamente.", ind:"% de presentaciones públicas realizadas.", value:0},
+      {id:"A1.9", name:"Resultados del Laboratorio presentados ante autoridades.", ind:"% de autoridades objetivo que recibieron la presentación.", value:0},
+    ]
+  },
+  {
+    compId:"Comp.2", cls:"c2", title:"Comp.2 · Campaña comunitaria",
+    items:[
+      {id:"A2.1", name:"Buenas prácticas ambientales identificadas.", ind:"% de prácticas valoradas positivamente", value:0},
+      {id:"A2.2", name:"Acuerdos seleccionados para difusión.", ind:"% de acuerdos seleccionados", value:0},
+      {id:"A2.3", name:"Narrativas comunitarias documentadas.", ind:"% de narrativas documentadas", value:0},
+      {id:"A2.4", name:"Públicos de la campaña definidos.", ind:"% de públicos caracterizados", value:0},
+      {id:"A2.5", name:"Mensajes centrales elaborados.", ind:"% de mensajes aprobados", value:0},
+      {id:"A2.6", name:"Canales de comunicación seleccionados.", ind:"% de canales seleccionados", value:0},
+      {id:"A2.7", name:"Estrategia de comunicación diseñada.", ind:"% de elementos de la estrategia desarrollados", value:0},
+      {id:"A2.8", name:"Estrategia de comunicación validada.", ind:"% de participantes que aprueban la estrategia", value:0},
+      {id:"A2.9", name:"Piezas audiovisuales producidas.", ind:"% de piezas audiovisuales producidas", value:0},
+      {id:"A2.10", name:"Cápsulas educativas producidas.", ind:"% de cápsulas educativas producidas", value:0},
+      {id:"A2.11", name:"Contenidos difundidos en medios comunitarios.", ind:"% de publicaciones comunitarias realizadas", value:0},
+      {id:"A2.12", name:"Contenidos difundidos en medios digitales.", ind:"% de publicaciones digitales realizadas", value:0},
+      {id:"A2.13", name:"Público objetivo alcanzado.", ind:"% del público objetivo alcanzado", value:0},
+      {id:"A2.14", name:"Monitoreo de la campaña realizado.", ind:"% de reportes entregados oportunamente", value:0},
+    ]
+  },
+  {
+    compId:"Comp.3", cls:"c3", title:"Comp.3 · Parcelas Demostrativas",
+    items:[
+      {id:"A3.1", name:"Estudio de suelo realizado.", ind:"% de muestras de suelo analizadas", value:0},
+      {id:"A3.2", name:"Diseño del sitio elaborado.", ind:"% de componentes del diseño desarrollados", value:3.0},
+      {id:"A3.3", name:"Diseño del sitio validado.", ind:"% de criterios técnicos cumplidos por el diseño", value:0},
+      {id:"A3.4", name:"Infraestructura básica instalada.", ind:"% de elementos de infraestructura instalados", value:0},
+      {id:"A3.5", name:"Módulos de cultivo establecidos.", ind:"% de módulos de cultivo establecidos", value:0},
+      {id:"A3.6", name:"Ciclos productivos realizados.", ind:"% de ciclos productivos completados", value:0},
+      {id:"A3.7", name:"Participantes comunitarios incorporados.", ind:"% de participantes incorporados", value:0},
+      {id:"A3.8", name:"Jornadas demostrativas realizadas.", ind:"% de jornadas demostrativas realizadas", value:0},
+      {id:"A3.9", name:"Visitas escolares realizadas.", ind:"% de visitas escolares realizadas", value:0},
+      {id:"A3.10", name:"Actividades de voluntariado juvenil realizadas.", ind:"% de actividades de voluntariado realizadas", value:0},
+      {id:"A3.11", name:"Intercambios con otras comunidades realizados.", ind:"% de intercambios comunitarios realizados", value:0},
+      {id:"A3.12", name:"Prácticas regenerativas demostradas.", ind:"% de prácticas regenerativas demostradas", value:0},
+      {id:"A3.13", name:"Rutas para los productos identificadas.", ind:"% de rutas consideradas viables", value:0},
+    ]
+  },
+];
+
+// ---------------- RENDER ----------------
+function renderStrategic(container, data, toneClass){
+  container.innerHTML = data.map(d => `
+    <div class="strategic-card ${toneClass}">
+      <span class="idtag">${d.id}</span>
+      <p class="ind-name">${d.name}</p>
+      <div class="bignum-row">
+        <span class="bignum">${d.value}%</span>
+      </div>
+      <div class="barwrap">
+        <div class="barfill" style="width:${Math.min(d.value,100)}%"></div>
+      </div>
+      <div class="goal">${d.sub}</div>
+    </div>
+  `).join("");
+}
+renderStrategic(document.getElementById("finGrid"), finData, "");
+renderStrategic(document.getElementById("propGrid"), propData, "tone-mint");
+
+document.getElementById("compGrid").innerHTML = compData.map(c => `
+  <div class="comp-card ${c.cls}">
+    <span class="idtag">${c.id}</span>
+    <h3>${c.name}</h3>
+    <div class="comp-field">
+      <div class="label">Indicador</div>
+      <div class="value">${c.indicador}</div>
+    </div>
+    <div class="comp-field">
+      <div class="label">Metodo de calculo</div>
+      <div class="value">${c.metodo}</div>
+    </div>
+    <div class="comp-progress-row">
+      <span class="pct">${c.value}%</span>
+      <div class="barwrap"><div class="barfill" style="width:${c.value}%"></div></div>
+    </div>
+    <div class="comp-sub">${c.sub}</div>
+  </div>
+`).join("");
+
+document.getElementById("actContainer").innerHTML = actGroups.map(g => `
+  <div class="act-group ${g.cls}">
+    <div class="act-group-head">
+      <span class="dot"></span>
+      <h3>${g.title}</h3>
+      <span class="compid">${g.compId}</span>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr><th style="width:60px;">ID</th><th>Actividad</th><th>Indicador</th><th class="act-bar-cell">Avance</th></tr>
+      </thead>
+      <tbody>
+        ${g.items.map(a => `
+          <tr>
+            <td class="act-id">${a.id}</td>
+            <td class="act-name">${a.name}</td>
+            <td class="act-ind">${a.ind}</td>
+            <td class="act-bar-cell">
+              <div class="act-bar-row">
+                <div class="act-barwrap"><div class="act-barfill" style="width:${a.value}%"></div></div>
+                <span class="act-pct">${a.value}%</span>
+              </div>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  </div>
+`).join("");
+
+// ---------------- TABS ----------------
+document.querySelectorAll(".tabbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tabbtn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+</script>
+
+</body>
+</html>
